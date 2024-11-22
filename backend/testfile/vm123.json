@@ -1,0 +1,18 @@
+[
+    {
+        "id": 1,
+        "system": "ap1",
+        "account": "marry",
+        "user": "tina",
+        "privilege": "read",
+        "note": "nothing"
+    },
+    {
+        "id": 2,
+        "system": "ap2",
+        "account": "gina",
+        "user": "wendy",
+        "privilege": "read",
+        "note": "good day"
+    }
+]
