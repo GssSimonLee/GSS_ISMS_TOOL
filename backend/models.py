@@ -8,8 +8,3 @@ class Item(BaseModel):
     user: str | None = None
     privilege: str | None = None
     note: str | None = None
-
-class Source(Enum):
-    Nil = "Nil"
-    VM = "vm"
-    Git = "git"

@@ -6,8 +6,8 @@ from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from typing import List
 from pathlib import Path
-from models import Item, Source
-from utils import hash_string, get_files
+from models import Item
+from utils import hash_string, get_files, generate_report
 
 
 app = FastAPI()
@@ -65,21 +65,21 @@ async def upload_file(
 
 
 @app.get("/items/{session}")
-async def read_items(session, source=Source.Nil):
+async def read_items(session, source):
     if not session:
         raise HTTPException(status_code=400, detail="session is required")
 
-    if source == Source.Nil:
-        raise HTTPException(status_code=404, detail=f"Not Found")
-    elif source == Source.Git:
+    if source == "git":
         prefix = "git"
-    elif source == Source.VM:
+    elif source == "vm":
         prefix = "vm"
     else:
         raise HTTPException(status_code=404, detail=f"Not Found")
 
     session_id = hash_string(session)
+    print(f"session_id: {session_id}")
     session_path = Path(STATIC_TEMPFILES) / session_id
+    print(session_path)
     if not Path(session_path).exists():
         raise HTTPException(status_code=404, detail=f"Not Found")
         
@@ -87,7 +87,7 @@ async def read_items(session, source=Source.Nil):
     return {"session_id": session, "files": files}
 
 @app.post("/gen_report")
-async def generate_report(
+async def gen_report(
     session: str = Form(...),
     files: List[str] = Form(...)):
     if not session:
